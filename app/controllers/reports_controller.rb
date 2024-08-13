@@ -5,9 +5,8 @@ class ReportsController < ApplicationController
 
   def create
     uploaded_file = params[:report][:file]
-    # TODO ler xml com nokogiri ou outra gem
-
-    # TODO processar o arquivo XML
+    service = XmlProcessorService.new(uploaded_file)
+    fiscal_document = service.call
 
     redirect_to report_path(fiscal_document), notice: 'Relatório gerado com sucesso.'
   end
@@ -15,12 +14,12 @@ class ReportsController < ApplicationController
   def show
     @fiscal_document = FiscalDocument.find(params[:id])
     @products = @fiscal_document.products
-    @taxes = @fiscal_document.tax
+    @taxes = @fiscal_document.taxes
   end
 
   private
 
   def document_params
-    params.require(:document).permit(:file)
+    params.require(:report).permit(:file)
   end
 end
