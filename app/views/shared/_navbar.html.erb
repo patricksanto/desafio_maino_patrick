@@ -1,0 +1,18 @@
+<nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+        <div class="flex-shrink-0 flex items-center">
+        <%= link_to root_path do %>
+            <h1 class="text-xl font-base text-gray-700">Desafio Mainô</h1>
+        <% end %>
+        </div>
+        <div class="flex items-center">
+        <% if user_signed_in? %>
+            <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+        <% else %>
+            <%= link_to 'Login', new_user_session_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+        <% end %>
+        </div>
+    </div>
+    </div>
+</nav>
