@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  serie: MyString
+  nNF: MyString
+  dhEmi: 2024-08-13 17:23:40
+  emitente: 
+  destinatario: 
+
+two:
+  serie: MyString
+  nNF: MyString
+  dhEmi: 2024-08-13 17:23:40
+  emitente: 
+  destinatario: 

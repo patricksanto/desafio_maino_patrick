@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  ncm: MyString
+  cfop: MyString
+  unit: MyString
+  quantity: 9.99
+  value: 9.99
+  fiscal_document: one
+
+two:
+  name: MyString
+  ncm: MyString
+  cfop: MyString
+  unit: MyString
+  quantity: 9.99
+  value: 9.99
+  fiscal_document: two

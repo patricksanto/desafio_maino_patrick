@@ -10,9 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_13_192751) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_13_202357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "fiscal_documents", force: :cascade do |t|
+    t.string "serie"
+    t.string "nNF"
+    t.datetime "dhEmi"
+    t.jsonb "emitente"
+    t.jsonb "destinatario"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "ncm"
+    t.string "cfop"
+    t.string "unit"
+    t.decimal "quantity"
+    t.decimal "value"
+    t.bigint "fiscal_document_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fiscal_document_id"], name: "index_products_on_fiscal_document_id"
+  end
+
+  create_table "taxes", force: :cascade do |t|
+    t.decimal "icms"
+    t.decimal "ipi"
+    t.decimal "pis"
+    t.decimal "cofins"
+    t.bigint "fiscal_document_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fiscal_document_id"], name: "index_taxes_on_fiscal_document_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +61,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_13_192751) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "products", "fiscal_documents"
+  add_foreign_key "taxes", "fiscal_documents"
 end
