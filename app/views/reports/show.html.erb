@@ -8,12 +8,12 @@
 <h3>Emitente</h3>
 <p><strong>Nome:</strong> <%= @fiscal_document.emitente['nome'] %></p>
 <p><strong>CNPJ:</strong> <%= @fiscal_document.emitente['cnpj'] %></p>
-<p><strong>Endereço:</strong> <%= @fiscal_document.emitente['endereco'] %></p>
+<p><strong>Endereço:</strong> <%= format_address(@fiscal_document.emitente['endereco']) %></p>
 
 <h3>Destinatário</h3>
 <p><strong>Nome:</strong> <%= @fiscal_document.destinatario['nome'] %></p>
 <p><strong>CNPJ:</strong> <%= @fiscal_document.destinatario['cnpj'] %></p>
-<p><strong>Endereço:</strong> <%= @fiscal_document.destinatario['endereco'] %></p>
+<p><strong>Endereço:</strong> <%= format_address(@fiscal_document.destinatario['endereco']) %></p>
 
 <h2>Produtos Listados</h2>
 <table>
