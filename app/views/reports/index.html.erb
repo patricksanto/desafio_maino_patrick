@@ -18,8 +18,10 @@
       </div>
       <div>
         <div class="-mt-px flex divide-x divide-gray-200">
-          <div class="-ml-px flex w-0 flex-1">
-            <%= link_to 'Excluir', report_path(fiscal_document), method: :delete, data: { confirm: 'Você tem certeza que deseja excluir esse relatório?' }, class: 'relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-red-600 hover:bg-red-100/50 transition' %>
+          <div class="flex w-0 flex-1 justify-center hover:bg-red-100/50 transition">
+            <%= button_to report_path(fiscal_document), method: :delete, data: { turbo_confirm: 'Você tem certeza que deseja excluir esse relatório?' }, class: 'relative inline-flex w-full items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-red-600' do %>
+              <span>Excluir</span>
+            <% end %>
           </div>
           <div class="flex w-0 flex-1">
             <%= link_to 'Ver Detalhes', report_path(fiscal_document), class: 'relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 hover:bg-teal-100/50' %>
