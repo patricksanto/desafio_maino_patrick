@@ -6,13 +6,16 @@
             <h1 class="text-xl font-base text-gray-700">Desafio Mainô</h1>
         <% end %>
         </div>
-        <div class="flex items-center">
-        
-        <% if user_signed_in? %>
-            <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
-        <% else %>
-            <%= link_to 'Login', new_user_session_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
-        <% end %>
+        <div class="flex items-center gap-4">
+            <% if FiscalDocument.any? %>
+                <%= link_to 'Relatórios', reports_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+            <% end %>
+            
+            <% if user_signed_in? %>
+                <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+            <% else %>
+                <%= link_to 'Login', new_user_session_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+            <% end %>
         </div>
     </div>
     </div>

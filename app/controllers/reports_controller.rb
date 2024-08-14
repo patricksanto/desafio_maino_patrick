@@ -3,6 +3,10 @@ class ReportsController < ApplicationController
 
   def new; end
 
+  def index
+    @fiscal_documents = FiscalDocument.all.order(created_at: :desc)
+  end
+
   def create
     uploaded_file = params[:report][:file]
 
@@ -20,6 +24,12 @@ class ReportsController < ApplicationController
     @fiscal_document = FiscalDocument.find(params[:id])
     @products = @fiscal_document.products
     @tax = @fiscal_document.taxes.first
+  end
+
+  def destroy
+    FiscalDocument.find(params[:id]).destroy
+
+    redirect_to reports_path, notice: 'Documento fiscal deletado.'
   end
 
   private

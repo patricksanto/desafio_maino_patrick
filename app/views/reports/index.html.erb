@@ -1,0 +1,31 @@
+<ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mx-4 lg:mx-20 my-10">
+  <% @fiscal_documents.each do |fiscal_document| %>
+    <li class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+      <div class="flex w-full items-center justify-between space-x-6 p-6">
+        <div class="flex-1 truncate">
+          <div class="flex items-center justify-between space-x-3">
+            <h3 class="truncate text-lg font-medium text-gray-900">
+              Relatório #<%= fiscal_document.id %>
+            </h3>
+            <span class="inline-flex flex-shrink-0 items-center rounded-full bg-blue-50 px-1.5 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+              <%= fiscal_document.serie %> / <%= fiscal_document.nNF %>
+            </span>
+          </div>
+          <p class="mt-1 truncate text-sm text-gray-500">
+            Emitido em: <%= fiscal_document.dhEmi.strftime('%d/%m/%Y %H:%M') %>
+          </p>
+        </div>
+      </div>
+      <div>
+        <div class="-mt-px flex divide-x divide-gray-200">
+          <div class="-ml-px flex w-0 flex-1">
+            <%= link_to 'Excluir', report_path(fiscal_document), method: :delete, data: { confirm: 'Você tem certeza que deseja excluir esse relatório?' }, class: 'relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-red-600 hover:bg-red-100/50 transition' %>
+          </div>
+          <div class="flex w-0 flex-1">
+            <%= link_to 'Ver Detalhes', report_path(fiscal_document), class: 'relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 hover:bg-teal-100/50' %>
+          </div>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>
