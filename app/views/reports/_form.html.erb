@@ -1,0 +1,38 @@
+<div class="flex justify-center items-start min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold leading-tight text-gray-900 mb-6">Carregar Documento Fiscal</h1>
+
+    <%= form_with(url: reports_path, local: true, multipart: true, class: "space-y-6") do |form| %>
+      <% if flash[:notice] %>
+        <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+
+      <div>
+        <label for="file-upload" class="block text-sm font-medium text-gray-700">Selecione o arquivo XML ou ZIP</label>
+        <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+          <div class="space-y-1 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M28 8H20v12H8v8h12v12h8V28h12v-8H28V8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="flex text-sm text-gray-600">
+              <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                <span>Upload a file</span>
+                <input id="file-upload" name="report[file]" type="file" class="sr-only">
+              </label>
+              <p class="pl-1">ou arraste e solte</p>
+            </div>
+            <p class="text-xs text-gray-500">
+              XML, ZIP até 10MB
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <%= form.submit "Analisar", class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      </div>
+    <% end %>
+  </div>
+</div>

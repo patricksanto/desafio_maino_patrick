@@ -1,54 +1,127 @@
-<h1>Relatório do Documento Fiscal</h1>
+<div class="overflow-hidden bg-white shadow sm:rounded-lg lg:mx-20 my-8 lg:px-10 lg:py-8">
+  <div class="px-4 py-6 sm:px-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold leading-7 text-gray-900">Relatório do Documento Fiscal #<%= @fiscal_document.serie %></h1>
+    <%= link_to 'Voltar', new_report_path, class: 'inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+  </div>
+  <div class="border-t border-gray-100">
+    <dl class="divide-y divide-gray-100">
+      <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900">Número de Série</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.serie %></dd>
+      </div>
+      <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900">Número da Nota Fiscal</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.nNF %></dd>
+      </div>
+      <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-900">Data e Hora de Emissão</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.dhEmi %></dd>
+      </div>
+    </dl>
+  </div>
 
-<h2>Dados do Documento Fiscal</h2>
-<p><strong>Número de Série:</strong> <%= @fiscal_document.serie %></p>
-<p><strong>Número da Nota Fiscal:</strong> <%= @fiscal_document.nNF %></p>
-<p><strong>Data e Hora de Emissão:</strong> <%= @fiscal_document.dhEmi %></p>
+  <div class="flex flex-col lg:flex-row lg:gap-10">
+    <div class="px-4 py-6 sm:px-6">
+      <h3 class="text-lg font-semibold leading-7 text-gray-900">Emitente</h3>
+      <div class="border-t border-gray-100 mt-2">
+        <dl class="divide-y divide-gray-100">
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-900">Nome</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.emitente['nome'] %></dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-900">CNPJ</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.emitente['cnpj'] %></dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-900">Endereço</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 max-w-[40ch]"><%= format_address(@fiscal_document.emitente['endereco']) %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
 
-<h3>Emitente</h3>
-<p><strong>Nome:</strong> <%= @fiscal_document.emitente['nome'] %></p>
-<p><strong>CNPJ:</strong> <%= @fiscal_document.emitente['cnpj'] %></p>
-<p><strong>Endereço:</strong> <%= format_address(@fiscal_document.emitente['endereco']) %></p>
+    <div class="px-4 py-6 sm:px-6">
+      <h3 class="text-lg font-semibold leading-7 text-gray-900">Destinatário</h3>
+      <div class="border-t border-gray-100 mt-2">
+        <dl class="divide-y divide-gray-100">
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-900">Nome</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.destinatario['nome'] %></dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-900">CNPJ</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @fiscal_document.destinatario['cnpj'] %></dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-900">Endereço</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 max-w-[40ch]"><%= format_address(@fiscal_document.destinatario['endereco']) %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
 
-<h3>Destinatário</h3>
-<p><strong>Nome:</strong> <%= @fiscal_document.destinatario['nome'] %></p>
-<p><strong>CNPJ:</strong> <%= @fiscal_document.destinatario['cnpj'] %></p>
-<p><strong>Endereço:</strong> <%= format_address(@fiscal_document.destinatario['endereco']) %></p>
 
-<h2>Produtos Listados</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>NCM</th>
-      <th>CFOP</th>
-      <th>Unidade</th>
-      <th>Quantidade</th>
-      <th>Valor Unitário</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @products.each do |product| %>
-      <tr>
-        <td><%= product.name %></td>
-        <td><%= product.ncm %></td>
-        <td><%= product.cfop %></td>
-        <td><%= product.unit %></td>
-        <td><%= product.quantity %></td>
-        <td><%= product.value %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<h2>Impostos Associados</h2>
-<% if @taxes.any? %>
-  <p><strong>ICMS:</strong> <%= @taxes.first.icms %></p>
-  <p><strong>IPI:</strong> <%= @taxes.first.ipi %></p>
-  <p><strong>PIS:</strong> <%= @taxes.first.pis %></p>
-  <p><strong>COFINS:</strong> <%= @taxes.first.cofins %></p>
-<% else %>
-  <p>Sem impostos associados.</p>
-<% end %>
+<div class="px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h2 class="text-xl font-semibold leading-7 text-gray-800">Produtos Listados</h2>
+      </div>
+    </div>
+    <div class="mt-4 flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">Nome</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">NCM</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">CFOP</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Unidade</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Quantidade</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Valor Unitário</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <% @products.each do |product| %>
+              <tr class="even:bg-gray-50">
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"><%= product.name %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.ncm %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.cfop %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.unit %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.quantity %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.value %></td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<%= link_to 'Voltar para o upload', new_report_path, class: 'btn btn-primary' %>
+
+<div class="lg:col-start-3 lg:row-end-1 px-4 py-6 sm:px-6 shadow-xl rounded-xl mx-6 mt-4">
+<h2 class="text-xl font-semibold leading-7 text-gray-800">Impostos</h2>
+  <dl class="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
+      <dt class="text-sm font-medium leading-6 text-gray-500">ICMS</dt>
+      <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900"><%= number_to_currency(@tax.icms, unit: 'R$', separator: ',', delimiter: '.') %></dd>
+    </div>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
+      <dt class="text-sm font-medium leading-6 text-gray-500">IPI</dt>
+      <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900"><%= number_to_currency(@tax.ipi, unit: 'R$', separator: ',', delimiter: '.') %></dd>
+    </div>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
+      <dt class="text-sm font-medium leading-6 text-gray-500">PIS</dt>
+      <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900"><%= number_to_currency(@tax.pis, unit: 'R$', separator: ',', delimiter: '.') %></dd>
+    </div>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
+      <dt class="text-sm font-medium leading-6 text-gray-500">COFINS</dt>
+      <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900"><%= number_to_currency(@tax.cofins, unit: 'R$', separator: ',', delimiter: '.') %></dd>
+    </div>
+  </dl>
+</div>
+</div>

@@ -14,7 +14,7 @@ class ReportsController < ApplicationController
   def show
     @fiscal_document = FiscalDocument.find(params[:id])
     @products = @fiscal_document.products
-    @taxes = @fiscal_document.taxes
+    @tax = @fiscal_document.taxes.first
   end
 
   private

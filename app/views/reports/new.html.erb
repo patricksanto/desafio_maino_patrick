@@ -1,16 +1,1 @@
-<h1>Carregar Documento Fiscal</h1>
-
-<%= form_with(url: reports_path, local: true, multipart: true) do |form| %>
-  <% if flash[:notice] %>
-    <p><%= flash[:notice] %></p>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :file, "Selecione o arquivo XML" %><br>
-    <%= form.file_field :file, name: 'report[file]' %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit "Analisar" %>
-  </div>
-<% end %>
+<%= render "form" %>
