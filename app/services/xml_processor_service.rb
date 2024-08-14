@@ -1,46 +1,59 @@
+require 'zip'
+
 class XmlProcessorService
   def initialize(file)
     @file = file
-    @xml_data = Nokogiri::XML(file.read)
     @namespaces = { 'nfe' => 'http://www.portalfiscal.inf.br/nfe' }
   end
 
   def call
-    fiscal_document = create_fiscal_document
-    create_products(fiscal_document)
-    create_taxes(fiscal_document)
-    fiscal_document
+    if zip_file?
+      process_zip_file
+    else
+      process_xml(@file.read)
+    end
   end
 
   private
 
+  def zip_file?
+    File.extname(@file.path) == '.zip'
+  end
+
+  def valid_xml_entry?(entry)
+    !entry.name.start_with?('__MACOSX', '._') && entry.name.downcase.end_with?('.xml')
+  end
+
+  def process_zip_file
+    Zip::File.open(@file.path) do |zip_file|
+      zip_file.each do |entry|
+        next unless valid_xml_entry?(entry)
+
+        entry.get_input_stream do |xml_file|
+          process_xml(xml_file.read)
+        end
+      end
+    end
+  end
+
+  def process_xml(content)
+    return if content.strip.empty?
+
+    @xml_data = Nokogiri::XML(content)
+    fiscal_document = create_fiscal_document
+    create_products(fiscal_document)
+    create_taxes(fiscal_document)
+  rescue Nokogiri::XML::SyntaxError => e
+    # Adicione tratamento de erro ou logging aqui, se necessário
+  end
+
   def create_fiscal_document
     FiscalDocument.create(
-      serie: @xml_data.xpath('//nfe:ide/nfe:serie', @namespaces).text,
-      nNF: @xml_data.xpath('//nfe:ide/nfe:nNF', @namespaces).text,
-      dhEmi: @xml_data.xpath('//nfe:ide/nfe:dhEmi', @namespaces).text,
-      emitente: {
-        cnpj: @xml_data.xpath('//nfe:emit/nfe:CNPJ', @namespaces).text,
-        nome: @xml_data.xpath('//nfe:emit/nfe:xNome', @namespaces).text,
-        endereco: {
-          rua: @xml_data.xpath('//nfe:emit/nfe:enderEmit/nfe:xLgr', @namespaces).text,
-          numero: @xml_data.xpath('//nfe:emit/nfe:enderEmit/nfe:nro', @namespaces).text,
-          bairro: @xml_data.xpath('//nfe:emit/nfe:enderEmit/nfe:xBairro', @namespaces).text,
-          cidade: @xml_data.xpath('//nfe:emit/nfe:enderEmit/nfe:xMun', @namespaces).text,
-          uf: @xml_data.xpath('//nfe:emit/nfe:enderEmit/nfe:UF', @namespaces).text
-        }
-      },
-      destinatario: {
-        cnpj: @xml_data.xpath('//nfe:dest/nfe:CNPJ', @namespaces).text,
-        nome: @xml_data.xpath('//nfe:dest/nfe:xNome', @namespaces).text,
-        endereco: {
-          rua: @xml_data.xpath('//nfe:dest/nfe:enderDest/nfe:xLgr', @namespaces).text,
-          numero: @xml_data.xpath('//nfe:dest/nfe:enderDest/nfe:nro', @namespaces).text,
-          bairro: @xml_data.xpath('//nfe:dest/nfe:enderDest/nfe:xBairro', @namespaces).text,
-          cidade: @xml_data.xpath('//nfe:dest/nfe:enderDest/nfe:xMun', @namespaces).text,
-          uf: @xml_data.xpath('//nfe:dest/nfe:enderDest/nfe:UF', @namespaces).text
-        }
-      }
+      serie: extract_text('//nfe:ide/nfe:serie'),
+      nNF: extract_text('//nfe:ide/nfe:nNF'),
+      dhEmi: extract_text('//nfe:ide/nfe:dhEmi'),
+      emitente: extract_emitente_data,
+      destinatario: extract_destinatario_data
     )
   end
 
@@ -59,10 +72,44 @@ class XmlProcessorService
 
   def create_taxes(fiscal_document)
     fiscal_document.taxes.create(
-      icms: @xml_data.xpath('//nfe:ICMS00/nfe:vICMS', @namespaces).text.to_d,
-      ipi: @xml_data.xpath('//nfe:IPITrib/nfe:vIPI', @namespaces).text.to_d,
-      pis: @xml_data.xpath('//nfe:PISNT/nfe:vPIS', @namespaces).text.to_d,
-      cofins: @xml_data.xpath('//nfe:COFINSNT/nfe:vCOFINS', @namespaces).text.to_d
+      icms: extract_decimal('//nfe:ICMS00/nfe:vICMS'),
+      ipi: extract_decimal('//nfe:IPITrib/nfe:vIPI'),
+      pis: extract_decimal('//nfe:PISNT/nfe:vPIS'),
+      cofins: extract_decimal('//nfe:COFINSNT/nfe:vCOFINS')
     )
+  end
+
+  def extract_emitente_data
+    {
+      cnpj: extract_text('//nfe:emit/nfe:CNPJ'),
+      nome: extract_text('//nfe:emit/nfe:xNome'),
+      endereco: extract_endereco_data('//nfe:emit/nfe:enderEmit')
+    }
+  end
+
+  def extract_destinatario_data
+    {
+      cnpj: extract_text('//nfe:dest/nfe:CNPJ'),
+      nome: extract_text('//nfe:dest/nfe:xNome'),
+      endereco: extract_endereco_data('//nfe:dest/nfe:enderDest')
+    }
+  end
+
+  def extract_endereco_data(base_path)
+    {
+      rua: extract_text("#{base_path}/nfe:xLgr"),
+      numero: extract_text("#{base_path}/nfe:nro"),
+      bairro: extract_text("#{base_path}/nfe:xBairro"),
+      cidade: extract_text("#{base_path}/nfe:xMun"),
+      uf: extract_text("#{base_path}/nfe:UF")
+    }
+  end
+
+  def extract_text(xpath)
+    @xml_data.xpath(xpath, @namespaces).text
+  end
+
+  def extract_decimal(xpath)
+    @xml_data.xpath(xpath, @namespaces).text.to_d
   end
 end
