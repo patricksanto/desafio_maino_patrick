@@ -1,0 +1,30 @@
+<div class="mx-4 lg:mx-10 my-4">
+    <%= form_with url: reports_path, method: :get, local: true, class: "space-y-4" do %>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div>
+            <%= label_tag :serie, "Número de Série" %>
+            <%= select_tag :serie, options_for_select(@series, params[:serie]), include_blank: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm" %>
+        </div>
+
+        <div>
+            <%= label_tag :nNF, "Número da Nota Fiscal" %>
+            <%= select_tag :nNF, options_for_select(@nf_numbers, params[:nNF]), include_blank: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm" %>
+        </div>
+
+        <div>
+            <%= label_tag :emitente_nome, "Nome do Emitente" %>
+            <%= select_tag :emitente_nome, options_for_select(@emitente_nomes, params[:emitente_nome]), include_blank: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm" %>
+        </div>
+
+        <div>
+            <%= label_tag :dhEmi, "Data de Emissão" %>
+            <%= select_tag :dhEmi, options_for_select(@datas_emissao, params[:dhEmi]), include_blank: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm" %>
+        </div>
+        
+        <div class="mt-4 flex gap-2 items-end justify-end">
+            <%= link_to "Limpar", reports_path, class: "rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+            <%= submit_tag "Filtrar", class: "rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+        </div>
+    </div>
+<% end %>
+</div>

@@ -4,7 +4,14 @@ class ReportsController < ApplicationController
   def new; end
 
   def index
-    @fiscal_documents = FiscalDocument.all.order(created_at: :desc)
+    return @fiscal_documents = FiscalDocument.all if params.empty?
+
+    filter_service = FiscalDocumentFilterService.new(params)
+    @fiscal_documents = filter_service.filter
+    @series = filter_service.series
+    @nf_numbers = filter_service.nf_numbers
+    @emitente_nomes = filter_service.emitente_nomes
+    @datas_emissao = filter_service.datas_emissao
   end
 
   def create
