@@ -5,10 +5,15 @@ class ReportsController < ApplicationController
 
   def create
     uploaded_file = params[:report][:file]
-    service = XmlProcessorService.new(uploaded_file)
-    fiscal_document = service.call
 
-    redirect_to report_path(fiscal_document), notice: 'Relatório gerado com sucesso.'
+    file_path = Rails.root.join('tmp', uploaded_file.original_filename)
+    File.open(file_path, 'wb') do |file|
+      file.write(uploaded_file.read)
+    end
+
+    XmlProcessorJob.perform_async(file_path.to_s)
+
+    redirect_to new_report_path, notice: 'Seu relatório esta sendo gerado...'
   end
 
   def show

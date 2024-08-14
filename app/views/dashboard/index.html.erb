@@ -1,5 +1,7 @@
-<div>
-  <h1 class="font-bold text-4xl">Dashboard#index</h1>
-  <p>Find me in app/views/dashboard/index.html.erb</p>
-  <%= link_to "carregar XML", new_report_path %>
-</div>
+
+
+<% if current_user %>
+  <%= render partial: "reports/form" %>
+<% else %>
+  <p>Para carregar um XML, faça login</p>
+<% end %>
