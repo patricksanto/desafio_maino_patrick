@@ -3,9 +3,15 @@
     <h1 class="text-2xl font-bold leading-tight text-gray-900 mb-6">Carregar Documento Fiscal</h1>
 
     <%= form_with(url: reports_path, local: true, multipart: true, class: "space-y-6") do |form| %>
+
       <% if flash[:notice] %>
         <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
           <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+          <%= flash[:alert] %>
         </div>
       <% end %>
 
