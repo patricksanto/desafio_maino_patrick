@@ -43,9 +43,6 @@ class XmlProcessorService
     fiscal_document = create_fiscal_document
     create_products(fiscal_document)
     create_taxes(fiscal_document)
-
-    puts "Created FiscalDocument with ID: #{fiscal_document.id}" if fiscal_document.persisted?
-
   rescue Nokogiri::XML::SyntaxError => e
     puts "Error processing XML: #{e.message}"
   end

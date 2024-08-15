@@ -55,7 +55,7 @@ RSpec.describe ReportsController, type: :controller do
         }.to change { XmlProcessorJob.jobs.size }.by(1)
 
         expect(response).to redirect_to(new_report_path)
-        expect(flash[:notice]).to eq('Seu relatório esta sendo gerado...')
+        expect(flash[:notice]).to eq('Seu relatório está sendo gerado...')
       end
 
       it 'enqueues an XML processor job for the ZIP file' do
