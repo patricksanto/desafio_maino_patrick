@@ -1,0 +1,45 @@
+services:
+  - type: redis
+    name: mainoredis
+    region: oregon
+    maxmemoryPolicy: noeviction
+    ipAllowList: [] # only allow internal connections
+
+  - type: worker
+    name: mainosidekiq
+    runtime: ruby
+    region: oregon
+    buildCommand: bundle install
+    startCommand: bundle exec sidekiq
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: mainoredis
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+
+  - type: web
+    name: desafio_maino_patrick
+    runtime: ruby
+    region: oregon
+    buildCommand: bundle install; bundle exec rake assets:precompile; bundle exec rake assets:clean;
+    startCommand: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: mainoredis
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: desafio_maino_patrick
+          property: connectionString
+
+databases:
+  - name: desafio_maino_patrick
+    region: oregon
+    plan: starter

@@ -17,13 +17,12 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
   database: desafio_maino_patrick_development
+  
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -81,6 +80,8 @@ test:
 #
 production:
   <<: *default
-  database: desafio_maino_patrick_production
-  username: desafio_maino_patrick
-  password: <%= ENV["DESAFIO_MAINO_PATRICK_DATABASE_PASSWORD"] %>
+  database: <%= ENV["PGDATABASE"] %>
+  username: <%= ENV["PGUSER"] %>
+  password: <%= ENV["PGPASSWORD"] %>
+  host: <%= ENV["PGHOST"] %>
+  port: <%= ENV.fetch("PGPORT", 5432) %>

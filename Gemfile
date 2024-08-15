@@ -38,8 +38,10 @@ gem 'sidekiq', '~> 6.2'
 # Devise for authentication
 gem 'devise', '~> 4.8'
 
-gem 'axlsx_rails'
-gem 'axlsx'
+gem 'caxlsx_rails'
+gem 'axlsx', '~> 3.0.0.pre'
+gem 'mimemagic', '~> 0.3.10'
+gem 'dotenv-rails', groups: [:development, :test]
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
