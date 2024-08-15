@@ -17,11 +17,10 @@ class ReportsController < ApplicationController
   def create
     uploaded_file = params[:report]&.dig(:file)
 
-    if uploaded_file.nil?
+    if uploaded_file.nil? || uploaded_file == ""
       flash.now[:alert] = 'Nenhum arquivo foi enviado. Por favor, selecione um arquivo XML ou ZIP.'
       return render :new, status: :unprocessable_entity
     end
-
 
     unless valid_file_type?(uploaded_file)
       flash.now[:alert] = 'Tipo de arquivo inválido. Por favor, envie um arquivo XML ou ZIP.'
