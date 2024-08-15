@@ -4,6 +4,6 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
   devise_for :users
-  root 'dashboard#index'
+  root 'reports#import'
   resources :reports, only: [:new, :create, :show, :index, :destroy]
 end

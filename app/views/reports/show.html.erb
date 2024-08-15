@@ -1,6 +1,6 @@
 <div class="overflow-hidden bg-white shadow sm:rounded-lg lg:mx-20 my-8 lg:px-10 lg:py-8">
   <div class="px-4 py-6 sm:px-6 flex justify-between items-center">
-    <h1 class="text-2xl font-bold leading-7 text-gray-900">Relatório do Documento Fiscal #<%= @fiscal_document.serie %></h1>
+    <h1 class="text-2xl font-bold leading-7 text-gray-700">Relatório do Documento Fiscal #<%= @fiscal_document.serie %></h1>
     <%= link_to 'Voltar', reports_path, class: 'inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
   </div>
   <div class="border-t border-gray-100">
@@ -87,7 +87,7 @@
             <tbody class="bg-white">
               <% @products.each do |product| %>
               <tr class="even:bg-gray-50">
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3"><%= product.name %></td>
+                <td class="whitespace-normal break-words py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 max-w-[40ch]"><%= product.name %></td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.ncm %></td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.cfop %></td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= product.unit %></td>
