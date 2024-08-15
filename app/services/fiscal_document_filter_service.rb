@@ -8,6 +8,7 @@ class FiscalDocumentFilterService
     documents = documents.where(serie: @params[:serie]) if @params[:serie].present?
     documents = documents.where(nNF: @params[:nNF]) if @params[:nNF].present?
     documents = documents.where("emitente->>'nome' = ?", @params[:emitente_nome]) if @params[:emitente_nome].present?
+    documents = documents.where("destinatario->>'nome' = ?", @params[:destinatario_nome]) if @params[:destinatario_nome].present?
     documents = documents.where(dhEmi: date_range(@params[:dhEmi])) if @params[:dhEmi].present?
     documents
   end
@@ -20,8 +21,12 @@ class FiscalDocumentFilterService
     distinct_values(:nNF)
   end
 
-  def emitente_nomes
-    distinct_jsonb_values('nome')
+  def emitente_names
+    distinct_jsonb_values('emitente', 'nome')
+  end
+
+  def destinatario_names
+    distinct_jsonb_values('destinatario', 'nome')
   end
 
   def datas_emissao
@@ -34,8 +39,8 @@ class FiscalDocumentFilterService
     FiscalDocument.distinct.pluck(attribute)
   end
 
-  def distinct_jsonb_values(jsonb_field)
-    field = Arel.sql("emitente->>'#{jsonb_field}'")
+  def distinct_jsonb_values(jsonb_column, jsonb_field)
+    field = Arel.sql("#{jsonb_column}->>'#{jsonb_field}'")
     FiscalDocument.distinct.pluck(field)
   end
 

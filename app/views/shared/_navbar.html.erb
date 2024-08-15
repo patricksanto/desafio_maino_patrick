@@ -7,11 +7,12 @@
         <% end %>
       </div>
       <div class="flex items-center gap-4">
-        <% if FiscalDocument.any? %>
-            <%= link_to 'Relatórios', reports_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
-        <% end %>
-        
         <% if user_signed_in? %>
+            <% if current_page?(reports_path) %>
+                <%= link_to 'Importar', root_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+            <% elsif FiscalDocument.any? %>
+                <%= link_to 'Relatórios', reports_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
+            <% end %>
             <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
         <% else %>
             <%= link_to 'Login', new_user_session_path, class: "rounded bg-indigo-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500" %>
