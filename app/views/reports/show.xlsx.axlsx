@@ -1,0 +1,80 @@
+wb = xlsx_package.workbook
+
+# Planilha 1: Informações Fiscais e Impostos
+wb.add_worksheet(name: "Informações Fiscais") do |sheet|
+  # Criando estilos
+  header_style = sheet.styles.add_style(b: true)
+  currency_style = sheet.styles.add_style(format_code: "R$ #,##0.00")
+
+  # Cabeçalhos baseados nas colunas das tabelas
+  sheet.add_row [
+    "Número de Série", 
+    "Número da Nota Fiscal", 
+    "Data e Hora de Emissão", 
+    "Emitente - Nome", 
+    "Emitente - CNPJ", 
+    "Emitente - Endereço", 
+    "Destinatário - Nome", 
+    "Destinatário - CNPJ", 
+    "Destinatário - Endereço", 
+    "Número de Produtos",
+    "ICMS", 
+    "IPI", 
+    "PIS", 
+    "COFINS", 
+    "Total (Produtos + Impostos)"
+  ], style: header_style
+
+  # Linha com as informações fiscais e impostos
+  sheet.add_row [
+    @fiscal_document.serie,
+    @fiscal_document.nNF,
+    @fiscal_document.dhEmi.strftime("%d/%m/%Y %H:%M"),
+    @fiscal_document.emitente['nome'],
+    @fiscal_document.emitente['cnpj'],
+    format_address(@fiscal_document.emitente['endereco']),
+    @fiscal_document.destinatario['nome'],
+    @fiscal_document.destinatario['cnpj'],
+    format_address(@fiscal_document.destinatario['endereco']),
+    @products.count,
+    @tax.icms,
+    @tax.ipi,
+    @tax.pis,
+    @tax.cofins,
+    @fiscal_document.grand_total
+  ], style: [
+    nil, nil, nil, nil, nil, nil, nil, nil, nil, 
+    nil, currency_style, currency_style, currency_style, currency_style, currency_style
+  ]
+end
+
+# Planilha 2: Produtos
+wb.add_worksheet(name: "Produtos") do |sheet|
+  # Criando estilos
+  header_style = sheet.styles.add_style(b: true)
+  currency_style = sheet.styles.add_style(format_code: "R$ #,##0.00")
+
+  # Cabeçalhos
+  sheet.add_row [
+    "Número da Nota Fiscal", 
+    "Produto - Nome", 
+    "Produto - NCM", 
+    "Produto - CFOP", 
+    "Produto - Unidade", 
+    "Produto - Quantidade", 
+    "Produto - Valor Unitário"
+  ], style: header_style
+
+  # Linhas de Produtos
+  @products.each do |product|
+    sheet.add_row [
+      @fiscal_document.nNF,
+      product.name,
+      product.ncm,
+      product.cfop,
+      product.unit,
+      product.quantity,
+      product.value
+    ], style: [nil, nil, nil, nil, nil, nil, currency_style]
+  end
+end

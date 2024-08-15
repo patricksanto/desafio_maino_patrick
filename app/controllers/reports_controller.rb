@@ -13,6 +13,13 @@ class ReportsController < ApplicationController
     @emitente_nomes = filter_service.emitente_names
     @destinatario_nomes = filter_service.destinatario_names
     @datas_emissao = filter_service.datas_emissao
+
+    respond_to do |format|
+      format.html
+      format.xlsx {
+        response.headers['Content-Disposition'] = 'attachment; filename=relatorio_fiscal.xlsx'
+      }
+    end
   end
 
   def create
@@ -34,6 +41,13 @@ class ReportsController < ApplicationController
     @fiscal_document = FiscalDocument.find(params[:id])
     @products = @fiscal_document.products
     @tax = @fiscal_document.taxes.first
+
+    respond_to do |format|
+      format.html
+      format.xlsx {
+        response.headers['Content-Disposition'] = "attachment; filename=relatorio_fiscal_#{params[:id]}.xlsx"
+      }
+    end
   end
 
   def destroy

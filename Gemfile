@@ -38,6 +38,9 @@ gem 'sidekiq', '~> 6.2'
 # Devise for authentication
 gem 'devise', '~> 4.8'
 
+gem 'axlsx_rails'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[ mingw mswin x64_mingw jruby ]
