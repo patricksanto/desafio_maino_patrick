@@ -1,7 +1,7 @@
 require 'zip'
 
 class XmlProcessorService
-  def initialize(file)
+  def initialize(file_content, zip_file: false)
     @file_content = file_content
     @zip_file = zip_file
     @namespaces = { 'nfe' => 'http://www.portalfiscal.inf.br/nfe' }
