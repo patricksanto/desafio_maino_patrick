@@ -1,3 +1,5 @@
+require 'base64'
+
 class ReportsController < ApplicationController
   before_action :authenticate_user!
 
@@ -110,7 +112,16 @@ class ReportsController < ApplicationController
 
   def process_file(file_path)
     file_content = File.read(file_path)
-    XmlProcessorJob.perform_async(file_content, File.extname(file_path))
+    file_extension = File.extname(file_path)
+
+    service = XmlProcessorService.new(file_content, zip_file: file_extension == '.zip')
+    extracted_data = service.call
+
+    extracted_data.each do |data|
+      XmlProcessorJob.perform_async(data)
+    end
+
     redirect_to new_report_path, notice: 'Seu relatório está sendo gerado...'
   end
+
 end
