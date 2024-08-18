@@ -1,11 +1,12 @@
 class XmlProcessorJob
   include Sidekiq::Job
 
-  def perform(file_path)
-    file = File.open(file_path)
-    service = XmlProcessorService.new(file)
+  def perform(file_content, file_extension)
+    if file_extension == '.zip'
+      service = XmlProcessorService.new(file_content, zip_file: true)
+    else
+      service = XmlProcessorService.new(file_content, zip_file: false)
+    end
     service.call
-    file.close
-    File.delete(file_path) if File.exist?(file_path)
   end
 end

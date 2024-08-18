@@ -2,7 +2,8 @@ require 'zip'
 
 class XmlProcessorService
   def initialize(file)
-    @file = file
+    @file_content = file_content
+    @zip_file = zip_file
     @namespaces = { 'nfe' => 'http://www.portalfiscal.inf.br/nfe' }
   end
 
@@ -25,7 +26,8 @@ class XmlProcessorService
   end
 
   def process_zip_file
-    Zip::File.open(@file.path) do |zip_file|
+    buffer = StringIO.new(@file_content)
+    Zip::File.open(buffer) do |zip_file|
       zip_file.each do |entry|
         next unless valid_xml_entry?(entry)
 
@@ -46,6 +48,7 @@ class XmlProcessorService
   rescue Nokogiri::XML::SyntaxError => e
     puts "Error processing XML: #{e.message}"
   end
+
 
   def create_fiscal_document
     FiscalDocument.create(

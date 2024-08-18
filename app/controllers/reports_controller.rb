@@ -109,7 +109,8 @@ class ReportsController < ApplicationController
   end
 
   def process_file(file_path)
-    XmlProcessorJob.perform_async(file_path.to_s)
+    file_content = File.read(file_path)
+    XmlProcessorJob.perform_async(file_content, File.extname(file_path))
     redirect_to new_report_path, notice: 'Seu relatório está sendo gerado...'
   end
 end
